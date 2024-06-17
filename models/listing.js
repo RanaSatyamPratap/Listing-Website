@@ -27,8 +27,8 @@ const listingSchema = new Schema({
   },
   geometry: {
     type: {
-      type: String, 
-      enum: ['Point'], 
+      type: String, // Don't do `{ location: { type: String } }`
+      enum: ['Point'], // 'location.type' must be 'Point'
       required: true
     },
     coordinates: {
@@ -38,6 +38,7 @@ const listingSchema = new Schema({
   },
   
 });
+listingSchema.index({ title: 'text', description: 'text', location: 'text', country: 'text' });
 
 
 listingSchema.post("findOneAndDelete", async (listing) => {
@@ -45,7 +46,6 @@ listingSchema.post("findOneAndDelete", async (listing) => {
     await Review.deleteMany({ _id: { $in: listing.reviews } });
   }
 });
-listingSchema.index({ title: 'text', description: 'text', location: 'text', country: 'text' });
 
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;
