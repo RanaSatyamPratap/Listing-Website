@@ -33,11 +33,8 @@ module.exports.showListing = async (req, res) => {
       req.flash("error", "Listing you requested for does not exist!");
       res.redirect("/listings");
     }
-    // console.log(listing);
     res.render("listings/show.ejs", { listing });
   };
-
-
 
   module.exports.createListing = async (req, res, next) => {
     let response = await geocodingClient
@@ -64,6 +61,19 @@ module.exports.showListing = async (req, res) => {
     res.redirect("/listings");
   };
   
+  //searchlisting Page
+module.exports.renderSearchPage = async (req, res) => { 
+  const query = req.query.q;
+  let listings;
+  if (query) {
+    listings = await Listing.find({
+      $text: { $search: query }
+    });
+  } else {
+    listings = await Listing.find({});
+  }
+  res.render('listings/search.ejs', { allListings: listings });
+};
   
   module.exports.renderEditForm = async (req, res) => {
 
