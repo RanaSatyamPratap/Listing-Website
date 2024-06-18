@@ -38,7 +38,7 @@ const listingSchema = new Schema({
   },
   
 });
-listingSchema.index({ title: 'text', description: 'text', location: 'text', country: 'text' });
+listingSchema.index({ title: 'text', location: 'text', country: 'text' });
 
 
 listingSchema.post("findOneAndDelete", async (listing) => {
